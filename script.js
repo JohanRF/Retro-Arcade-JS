@@ -45,10 +45,15 @@ function initCarousel() {
     if (tiles.length === 0 || !carouselContainer) return;
 
     function renderCarousel(){
-        const totalStep = tileWidth + gap;
+        const totalStep = tileWidth + gap; //284px
 
+        //Obtenemos el ancho del contenedor padre( la pantalla / dashboard)
+        const containerWidth = carouselContainer.parentElement.clientWidth;
+        //Calculamos la distancia desde el inicio del carrusel hasta el CENTRO de la tarjeta activa
+        const targetCenter = (activeIndex * totalStep) + (tileWidth / 2);
         //Calculo exacto para desplazar el riel y centrar la tarjeta activa
-        const offsetTranslation = -(activeIndex * totalStep) - (tileWidth / 2);
+        const offsetTranslation = (containerWidth / 2) - targetCenter;
+
         carouselContainer.style.transform = `translateX(${offsetTranslation}px)`;
 
         tiles.forEach((tile, index) =>{
@@ -67,7 +72,7 @@ function initCarousel() {
             }else{
                 tile.classList.add('hiddenTile');
             }
-        })
+        });
     }
 
     function updateInfoBar(activeTile) {
@@ -107,6 +112,9 @@ function initCarousel() {
 
     //Carga Inicial
     renderCarousel();
+
+    //Recalcular centrado al redimensionar la ventana
+    window.addEventListener('resize', renderCarousel);
 }
 
 //* 5. SISTEMA DE MODALES (HALL OF FAME)

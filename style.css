@@ -172,8 +172,6 @@ body::before{
     width: max-content;
     min-height: 420px;
     position: relative;
-    left: 50%; /* La referencia del carrusel inicia en el centro del viewport */
-    transform: translateX(-50%);
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
