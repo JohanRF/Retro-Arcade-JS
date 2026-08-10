@@ -20,12 +20,10 @@ body {
     background-color: var(--bgDark);
     color: var(--textLight);
     font-family: var(--fontRetro);
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin: 0;
     overflow: hidden;
 }
 
@@ -75,11 +73,8 @@ body::before {
 
 .gameContainer {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
     gap: 1rem;
     z-index: 1;
 }
