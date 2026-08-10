@@ -18,12 +18,30 @@ const tileWidth = 260;  // Ancho del tile en ps
 const gap = 24;         // Separacion entre Tile (1.5rem)
 let activeIndex = 0;    //Indice del juego selecionado actualmente
 
+// Guardamos la función de render fuera de initCarousel para poder
+// llamarla de nuevo más tarde, desde afuera, sin duplicar código.
+let renderCarousel = () => {};
+
 //* 2. INICIALIZACION DE LA APLICACION
 document.addEventListener('DOMContentLoaded', ()=>{
     initClock();
     initCarousel();
     initModals();
-})
+
+    // FIX DEL DESCENTRADO EN GITHUB PAGES:
+    /* DOMContentLoaded puede disparar ANTES de que las fuentes de Google
+    (Press Start 2P / VT323) terminen de aplicarse, sobre todo en un
+    servidor real (GitHub Pages) donde la descarga es más lenta que
+    en local. Si el layout cambia un poco después de medir el ancho,
+    el centrado calculado en JS queda desfasado.
+    Solución: recalcular otra vez cuando las fuentes YA estén listas,
+    y otra vez cuando la página (imágenes incluidas) cargó del todo. */
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => renderCarousel());
+    }
+});
+
+window.addEventListener('load', () => renderCarousel());
 
 //* 3. SISTEMA DE RELOJ EN TIEMPO REAL
 function initClock(){
@@ -44,7 +62,7 @@ function initClock(){
 function initCarousel() {
     if (tiles.length === 0 || !carouselContainer) return;
 
-    function renderCarousel(){
+    renderCarousel = function(){
         const totalStep = tileWidth + gap; //284px
 
         //Obtenemos el ancho del contenedor padre( la pantalla / dashboard)
@@ -112,7 +130,6 @@ function initCarousel() {
 
     //Carga Inicial
     renderCarousel();
-
     //Recalcular centrado al redimensionar la ventana
     window.addEventListener('resize', renderCarousel);
 }
