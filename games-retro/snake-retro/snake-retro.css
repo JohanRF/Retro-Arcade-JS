@@ -1,0 +1,305 @@
+:root {
+    --bgDark: #0a0a12;
+    --bgCard: #141423;
+    --neonCyan: #00f3ff;
+    --neonGreen: #00ff66;
+    --neonPink: #ff0055;
+    --neonYellow: #ffe600;
+    --textLight: #e0e6ed;
+    --fontArcade: 'Press Start 2P', monospace;
+    --fontRetro: 'VT323', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bgDark);
+    color: var(--textLight);
+    font-family: var(--fontRetro);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Efecto Pantalla CRT */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255,0,0,0.03), rgba(0,255,0,0.01), rgba(0,0,255,0.03));
+    background-size: 100% 4px, 6px 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.btnBack {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    color: var(--neonCyan);
+    text-decoration: none;
+    font-family: var(--fontArcade);
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background-color: var(--bgCard);
+    border: 2px solid rgba(0, 243, 255, 0.3);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    z-index: 20; /* Asegura estar sobre cualquier elemento */
+}
+.btnBack:hover {
+    color: var(--neonGreen);
+    border-color: var(--neonGreen);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+}
+
+.arcadeLayout{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2rem;
+	z-index: 1;
+}
+
+.gameContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    z-index: 1;
+}
+
+/* HUD (Marcador) */
+.gameHUD {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--fontArcade);
+    font-size: 0.7rem;
+}
+
+.scoreBoard{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.scoreBoard span {
+    color: var(--neonGreen);
+}
+
+/* Contenedor del Lienzo Canvas */
+.canvasWrapper {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    border: 3px solid var(--neonCyan);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/** El Canvas en sí */
+canvas {
+    background-color: #0e0e1a;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Modal superpuesto (Game Over / Pausa) */
+.overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(10, 10, 18, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--fontArcade);
+    text-align: center;
+}
+.overlay.hidden {
+    display: none;
+}
+
+#overlayTitle {
+    color: var(--neonPink);
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.7);
+}
+
+#overlaySubtitle {
+    font-family: var(--fontRetro);
+    color: var(--textLight);
+    font-size: 1.2rem;
+}
+
+/* Formulario guardar record */
+.nameInputBlock{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: .6rem;
+	margin-top: .5rem;
+}
+.nameInputBlock.hidden{
+	display: none;
+}
+.recordNotice{
+	color: var(--neonYellow);
+	font-size: .7rem;
+	animation: blink 1s infinite;
+}
+
+#playerNameInput{
+	background-color: var(--bgCard);
+    border: 2px solid var(--neonYellow);
+    color: var(--neonCyan);
+    font-family: var(--fontArcade);
+    font-size: 0.8rem;
+    padding: 0.4rem;
+    text-align: center;
+    border-radius: 4px;
+    outline: none;
+}
+
+.btnSave{
+	background-color: var(--neonYellow);
+    color: var(--bgDark);
+    border: none;
+    font-family: var(--fontArcade);
+    font-size: 0.65rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* ESTILOS PARA LOS PANELES LATERALES */
+/* ESTILOS DE LOS NUEVOS PANELES LATERALES */
+.sidePanel {
+    width: 260px;
+    height: 500px; /* Misma altura del canvas */
+    background-color: var(--bgCard);
+    border: 2px solid rgba(0, 243, 255, 0.25);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.panelHeader{
+	background-color: rgba(0,243,255,.1);
+	padding: .8rem 1rem;
+	border-bottom: 2px solid rgba(0,243,255,.25);
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	color: var(--neonCyan);
+}
+.panelHeader h2{
+	font-family: var(--fontArcade);
+	font-size: .7rem;
+}
+.panelBody{
+	padding: 1rem .8rem;
+	display: flex;
+	flex-direction: column;
+	gap: .8rem;
+    overflow-y: hidden;
+}
+
+.infoGroup h3{
+	font-family: var(--fontArcade);
+    font-size: 0.6rem;
+    color: var(--neonYellow);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.infoGroup p {
+    color: var(--textLight);
+    font-size: 1.1rem;
+    line-height: 1.3;
+}
+
+.leaderboard {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0;
+    margin: 0;
+}
+
+.emptyMsg {
+    list-style: none;
+    color: #7a8b9e;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/** Formato general para cada ítem de la lista de récords */
+.leaderboard li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--fontArcade);
+    font-size: .65rem;
+    padding: .15rem .3rem;
+}
+.leaderboard .rank{
+    width: 28px;
+    text-align: left;
+    color: var(--textLight);
+    opacity: .75;
+}
+.leaderboard .player-name{
+    flex-grow: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: .2rem;
+}
+
+/* Clases de medallas para las 3 primeras posicion */
+.leaderboard li.gold{
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255,215,0,.6);
+}
+.leaderboard li.silver {
+    color: #c0c0c0;
+    text-shadow: 0 0 8px rgba(192, 192, 192, 0.6);
+}
+.leaderboard li.bronze {
+    color: #cd7f32;
+    text-shadow: 0 0 8px rgba(205, 127, 50, 0.6);
+}
+/* Estilo del separador - */
+.leaderboard .separator{
+    color: var(--neonPink);
+    margin: 0 .4rem;
+}
+.leaderboard .player-score{
+    text-align: right;
+    min-width: 45px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}

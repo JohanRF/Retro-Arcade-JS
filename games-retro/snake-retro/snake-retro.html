@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Snake Retro - Retro Arcade JS</title>
+	<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="snake-retro.css">
+</head>
+<body>
+	<!--? BOTON PARA VOLVER A LA PAGINA PRINCIPAL -->
+	<a href="../../index.html" class="btnBack"><i class="fa-solid fa-arrow-left"></i> SALIR</a>
+
+	<div class="arcadeLayout">
+	<!--? LADO IZQUIERDO: Reglas y Controles -->
+        <aside class="sidePanel leftPanel">
+            <div class="panelHeader">
+                <i class="fa-solid fa-circle-info"></i>
+                <h2>CÓMO JUGAR</h2>
+            </div>
+            <div class="panelBody">
+                <div class="infoGroup">
+                    <h3><i class="fa-solid fa-bullseye"></i> OBJETIVO</h3>
+                    <p>Come la comida brillante para crecer y sumar puntos. Evita chocar contra los bordes o con tu propio cuerpo.</p>
+                </div>
+                <div class="infoGroup">
+                    <h3><i class="fa-solid fa-keyboard"></i> CONTROLES</h3>
+                    <p>• Flechas / WASD: Mover<br>• Tecla P: Pausa<br>• Espacio: Reiniciar</p>
+                </div>
+            </div>
+        </aside>
+
+		<!--? CENTRO: Canvas a 500x500 -->
+		<div class="gameContainer">
+			<!-- BARRA SUPERIOR: HUD (Heads-Up Display / Marcador de Puntos) -->
+			<header class="gameHUD">
+				<div class="scoreBoard">
+					<span>SCORE: <strong id="currentScore">0000</strong></span>
+					<span>HIGH: <strong id="highScore">0000</strong></span>
+				</div>
+			</header>
+
+			<!-- EL LIENZO DIGITAL: Agrandado a 500x500 -->
+            <main class="canvasWrapper">
+                <canvas id="snakeCanvas" width="500" height="500"></canvas>
+
+                <div id="gameOverlay" class="overlay hidden">
+                    <h2 id="overlayTitle">GAME OVER</h2>
+                    <p id="overlaySubtitle">PRESIONA ESPACIO PARA REINICIAR</p>
+
+                    <!-- Formulario de Récord -->
+                    <div id="nameInputContainer" class="nameInputBlock hidden">
+                        <p class="recordNotice">¡NUEVO RÉCORD!</p>
+                        <input type="text" id="playerNameInput" maxlength="8" placeholder="TU NOMBRE" autocomplete="off">
+                        <button id="btnSaveScore" class="btnSave">GUARDAR</button>
+                    </div>
+                </div>
+            </main>
+
+		</div>
+
+		<!-- LADO DERECHO: Tabla de Récords -->
+		<aside class="sidePanel rightPanel">
+			<div class="panelHeader">
+				<i class="fa-solid fa-trophy"></i>
+				<h2>TOP RÉCORDS</h2>
+			</div>
+			<div class="panelBody">
+				<ol id="leaderboardList" class="leaderboard">
+					<li class="emptyMsg">Sin récords aún...</li>
+				</ol>
+			</div>
+		</aside>
+
+	</div>
+	<script src="https://kit.fontawesome.com/4e26a4ebf9.js" crossorigin="anonymous"></script>
+	<script type="module"  src="js/main.js"></script>
+</body>
+</html>

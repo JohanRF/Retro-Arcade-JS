@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="img/control-de-juego.png" type="image/x-icon">
+
+	<!-- Google fonts (8bit / Arcade) -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="style.css">
+	<title>Retro Arcade JS | Hub</title>
+</head>
+
+<body>
+
+	<div class="consoleContainer">
+
+        <!-- 1. BARRA SUPERIOR DE ESTADO (SYSTEM STATUS BAR) -->
+        <header class="systemBar">
+            <div class="playerProfile">
+                <i class="fa-solid fa-circle-user avatarIcon"></i>
+                <span class="playerName" id="playerTag">PLAYER UNKNOWN</span>
+                <span class="statusBadge"><i class="fa-solid fa-wifi"></i> ONLINE</span>
+            </div>
+
+            <div class="systemTitle">
+                <h1 class="brandLogo"><i class="fa-solid fa-gamepad"></i> RETRO ARCADE JS</h1>
+                <p class="brandSlogan">Dale START a tus momentos</p>
+            </div>
+
+            <div class="systemMetrics">
+                <span id="systemClock" class="clockText">00:00</span>
+                <i class="fa-solid fa-battery-full batteryIcon"></i>
+            </div>
+        </header>
+
+        <!-- 2. CARRUSEL HORIZONTAL DE JUEGOS (TILES / CANALES) -->
+        <main class="consoleDashboard">
+            <section class="gameCarousel">
+
+                <!-- Tile 1 (Posición inicial 0: SNAKE RETRO) -->
+                <article class="gameTile active" data-title="SNAKE RETRO" data-controls="Teclado (Flechas / WASD)">
+                    <div class="tileImage" style="background-image: url('img/cap-img-snake-retro.png');"></div>
+                    <div class="tileInfo">
+                        <h2 class="gameTitle"><i class="fa-solid fa-worm"></i> SNAKE RETRO</h2>
+                        <a href="games-retro/snake-retro/snake-retro.html" class="btnStartGame">
+                            <i class="fa-solid fa-play"></i> START
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Tile 2 (Posición 1: TRES EN RAYA) -->
+                <article class="gameTile" data-title="TRES EN RAYA" data-controls="Mouse (Clic Izquierdo)">
+                    <div class="tileImage" style="background-image: url('assets/images/ttt-preview.png');"></div>
+                    <div class="tileInfo">
+                        <h2 class="gameTitle">TRES EN RAYA</h2>
+                        <a href="games/tic-tac-toe/index.html" class="btnStartGame">START</a>
+                    </div>
+                </article>
+
+                <!-- Tile 3 (Posición 2: LOCKED) -->
+                <article class="gameTile locked">
+                    <div class="tileImage">
+                        <i class="fa-solid fa-lock lockIcon"></i>
+                    </div>
+                    <div class="tileInfo">
+                        <h2 class="gameTitle">COMING SOON</h2>
+                        <button class="btnStartGame" disabled>LOCKED</button>
+                    </div>
+                </article>
+
+                <!-- Tile 4 (Posición 3: LOCKED) -->
+                <article class="gameTile locked">
+                    <div class="tileImage">
+                        <i class="fa-solid fa-lock lockIcon"></i>
+                    </div>
+                    <div class="tileInfo">
+                        <h2 class="gameTitle">SLOT 04</h2>
+                        <button class="btnStartGame" disabled>LOCKED</button>
+                    </div>
+                </article>
+
+                <!-- Tile 5 (Posición 4: LOCKED) -->
+                <article class="gameTile locked">
+                    <div class="tileImage">
+                        <i class="fa-solid fa-lock lockIcon"></i>
+                    </div>
+                    <div class="tileInfo">
+                        <h2 class="gameTitle">SLOT 05</h2>
+                        <button class="btnStartGame" disabled>LOCKED</button>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- Panel de Información del Juego Seleccionado -->
+            <div class="gameDetailsBar">
+                <span id="selectedGameName" class="detailItem"><i class="fa-solid fa-gamepad"></i> SNAKE RETRO</span>
+                <span id="selectedGameControls" class="detailItem"><i class="fa-solid fa-keyboard"></i> Controles: Teclado</span>
+            </div>
+        </main>
+
+        <!-- 3. BARRA DE ACCESOS RÁPIDOS (MENÚ INFERIOR) -->
+        <footer class="quickMenu">
+            <div class="actionButtons">
+                <button id="btnHallOfFame" class="iconMenuBtn" title="Hall of Fame">
+                    <i class="fa-solid fa-trophy"></i>
+                    <span class="btnLabel">RÉCORDS</span>
+                </button>
+
+                <a href="https://github.com/tu-usuario/retro-arcade-js" target="_blank" rel="noopener noreferrer"
+                    class="iconMenuBtn" title="GitHub Repository">
+                    <i class="fa-brands fa-github"></i>
+                    <span class="btnLabel">REPO</span>
+                </a>
+            </div>
+
+            <div class="footerCredits">
+                <p>Retro Arcade JS &copy; 2026 - Vanilla JS Edition</p>
+            </div>
+        </footer>
+
+        <!-- 4. MODAL DESPLEGABLE: HALL OF FAME -->
+        <div id="hallOfFameModal" class="modalOverlay hidden">
+            <div class="modalCard">
+                <header class="modalHeader">
+                    <h2><i class="fa-solid fa-ranking-star"></i> HALL OF FAME</h2>
+                    <button id="btnCloseModal" class="btnClose"><i class="fa-solid fa-xmark"></i></button>
+                </header>
+
+                <div id="hallOfFameContent" class="modalBody">
+                    <!-- JS inyectará las columnas con el Top por juego (Posición | Tag 4 Letras | Puntaje) -->
+                    <p class="emptyScores"><i class="fa-solid fa-ghost"></i> No hay récords registrados aún. ¡Sé el primero en jugar!</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+	<script src="https://kit.fontawesome.com/4e26a4ebf9.js" crossorigin="anonymous"></script>
+	<script src="script.js"></script>
+</body>
+
+</html>

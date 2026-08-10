@@ -1,0 +1,433 @@
+:root {
+    --bgDark: #0a0a12;
+    --bgCard: #141423;   
+    --bgCardHover: #1c1c33; 
+    --neonCyan: #00f3ff;   
+    --neonPink: #ff0055;    
+    --neonYellow: #ffe600;  
+    --neonGreen: #00ff66; 
+    --textLight: #e0e6ed;   
+    --textMuted: #7a8b9e;    
+
+    --fontArcade: 'Press Start 2P', monospace; /* Encabezados / Titulares 8-bit */
+    --fontRetro: 'VT323', monospace;           /* Textos / Botones / HUD */
+
+    /*EFECTOS RETRO & RESPLANDOR (GLOW SHADOWS) */
+    --glowCyan: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
+    --glowPink: 0 0 10px rgba(255, 0, 85, 0.5), 0 0 20px rgba(255, 0, 85, 0.3);
+    --glowYellow: 0 0 10px rgba(255, 230, 0, 0.5), 0 0 20px rgba(255, 230, 0, 0.3);
+    --glowTileActive: 0 0 20px rgba(0, 243, 255, 0.8), 0 0 40px rgba(0, 243, 255, 0.4);
+
+    /*MEDIDAS Y ESTRUCTURA (CONSOLE VIEWPORT) */
+    --headerHeight: 75px;
+    --footerHeight: 85px;
+    --borderRadius: 14px;
+    --transitionSpeed: 0.3s ease;
+
+    /*TILES DE LA CONSOLA */
+    --tileWidth: 260px;
+    --tileHeight: 320px;
+    --tileActiveScale: 1.06;
+}
+
+/**======= RESET & BASE STYLES =======*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bgDark);
+	color: var(--textLight);
+	font-family: var(--fontRetro);
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden; /* Para que no haya scroll en general */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/*? Efecto Malla CRT de fondo */
+body::before{
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		rgba(18,16,16,0)50%,
+		rgba(0,0,0, .25)50%
+	), linear-gradient(
+		90deg,
+		rgba(255,0,0, .03),
+		rgba(0,255,0, .01),
+		rgba(0,0,255, .03)
+	);
+	background-size: 100% 4px, 6px 100%;
+	pointer-events: none;
+	z-index: 10;
+}
+
+/**======= MAIN CONSOLE CONTAINER =======*/
+.consoleContainer{
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 0 2rem;
+	position: relative;
+	z-index: 1;
+}
+
+/**======= BARRA SUPERIOR DE ESTADO (SYSTEM BAR) =======*/
+.systemBar{
+	height: var(--headerHeight);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 2px solid rgba(0, 243, 255, 0.2);
+	padding: 0 1rem;
+}
+
+.playerProfile{
+	display: flex;
+	align-items: center;
+	gap: .75rem;
+	font-size: 1rem;
+}
+.avatarIcon{
+	font-size: 1.8rem;
+	color: var(--neonCyan);
+}
+.playerName{
+	font-family: var(--fontArcade);
+	font-size: .7rem;
+	color: var(--textLight);
+	letter-spacing: 1px;
+}
+.statusBadge{
+	font-size: .9rem;
+	color: var(--neonGreen);
+	background: rgba(0,255,102, .1);
+	padding: .2rem .6rem;
+	border-radius: 20px;
+	border: 1px solid var(--neonGreen);
+}
+
+.systemTitle{
+	text-align: center;
+}
+.brandLogo{
+	font-family: var(--fontArcade);
+	font-size: 1.1rem;
+	color: var(--neonCyan);
+	text-shadow: var(--glowCyan);
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+}
+.brandSlogan{
+	font-size: 1rem;
+	color: var(--textMuted);
+	margin-top: .2rem;
+}
+
+.systemMetrics{
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	font-size: 1.4rem;
+}
+.clockText{
+	font-family: var(--fontArcade);
+	font-size: .8rem;
+	color: var(--neonYellow);
+}
+.batteryIcon{
+	color: var(--neonGreen);
+}
+
+/**======= BASHBOARD Y CARRUSEL DE TILES =======*/
+.consoleDashboard {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.gameCarousel {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* IMPORTANTE: flex-start para controlar la posición manual */
+    gap: 1.5rem; /* 24px */
+    width: max-content;
+    min-height: 420px;
+    position: relative;
+    left: 50%; /* La referencia del carrusel inicia en el centro del viewport */
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.gameTile {
+    width: var(--tileWidth); /* 260px */
+    height: var(--tileHeight);
+    background-color: var(--bgCard);
+    border-radius: var(--borderRadius);
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transform-origin: bottom center;
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                opacity 0.35s ease, 
+                border-color 0.35s ease, 
+                box-shadow 0.35s ease;
+}
+
+/* Slot Central (ACTIVO) */
+.gameTile.active {
+    transform: scale(1.08);
+    opacity: 1;
+    border-color: var(--neonCyan);
+    box-shadow: var(--glowTileActive);
+    z-index: 3;
+}
+
+/* Slots Inmediatos (-1 / +1) */
+.gameTile.near {
+    transform: scale(0.85);
+    opacity: 0.55;
+    border-color: rgba(255, 255, 255, 0.15);
+    z-index: 2;
+}
+/* Slots Extremos (-2 / +2) */
+.gameTile.far {
+    transform: scale(0.70);
+    opacity: 0.25;
+    border-color: rgba(255, 255, 255, 0.05);
+    z-index: 1;
+}
+/* Ocultos visualmente sin romper Flexbox */
+.gameTile.hiddenTile {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden; /* Cambiado: No usa display:none para mantener medidas */
+}
+.tileImage{
+	height: 200px; /* En lugar de flex: 1, le damos altura fija */
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #0e0e1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+.tileInfo{
+	height: 110px; /* Altura fija para la parte inferior de la tarjeta */
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--bgCard);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Separa título y botón proporcionalmente */
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+.gameTitle{
+	font-family: var(--fontArcade);
+	font-size: .75rem;
+	color: var(--textLight);
+	text-align: center;
+}
+.btnStartGame{
+	width: 100%;
+	padding: .6rem;
+	border: none;
+	border-radius: 8px;
+	background-color: var(--neonCyan);
+	color: var(--bgDark);
+	font-family: var(--fontArcade);
+	font-size: .7rem;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+	display: inline-block;
+	cursor: pointer;
+	transition: background-color var(--transitionSpeed), box-shadow var(--transitionSpeed);
+}
+.btnStartGame:hover{
+	background-color: #66f7ff;
+	box-shadow: var(--glowCyan);
+}
+
+/* Tile bloqueado */
+.gameTile.locked{
+	opacity: .4;
+	cursor: not-allowed;
+}
+.gameTile.locked:hover{
+	transform: none;
+	border-color: rgba(255,255,255, .1);
+	box-shadow: none;
+}
+.lockIcon{
+	font-size: 3rem;
+	color: var(--textMuted);
+}
+.gameTile.locked .btnStartGame{
+	background-color: var(--textMuted);
+	color: var(--bgDark);
+	cursor: not-allowed;
+}
+
+/* Barra inferior de detalles del juego activo */
+.gameDetailsBar{
+	display: flex;
+	gap: 2rem;
+	background: rgba(20,20,35,.8);
+	padding: .6rem 1.8rem;
+	border-radius: 30px;
+	border: 1px solid rgba(0,243,255, .3);
+	box-shadow: var(--glowCyan);
+}
+.detailItem{
+	font-size: 1.2rem;
+	color: var(--neonCyan);
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+}
+
+/**======= BARRA DE ACCESOS RAPIDOS =======*/
+.quickMenu{
+	height: var(--footerHeight);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-top: 2px solid rgba(0,243,255,.2);
+	padding: 0 1rem;
+}
+.actionButtons{
+	display: flex;
+	gap: 1.2rem;
+}
+.iconMenuBtn {
+    background-color: var(--bgCard);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    color: var(--textLight);
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--fontRetro);
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transitionSpeed);
+}
+.iconMenuBtn i {
+    font-size: 1.2rem;
+    color: var(--neonYellow);
+}
+.iconMenuBtn:hover {
+    border-color: var(--neonYellow);
+    box-shadow: var(--glowYellow);
+    transform: translateY(-3px);
+}
+
+.footerCredits p {
+    color: var(--textMuted);
+    font-size: 1rem;
+}
+
+/**======= MODAL DESPLEGABLE =======*/
+/* HALL OF FAME */
+.modalOverlay{
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(10, 10, 18, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity var(--transitionSpeed);
+}
+.modalOverlay.hidden { /* Aca por defecto se esconde cuando lo llamamos */
+    display: none;
+}
+.modalCard {
+    width: 550px;
+    max-width: 90%;
+    background-color: var(--bgCard);
+    border: 3px solid var(--neonYellow);
+    border-radius: var(--borderRadius);
+    box-shadow: var(--glowYellow);
+    overflow: hidden;
+}
+.modalHeader {
+    padding: 1rem 1.5rem;
+    background-color: rgba(255, 230, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--neonYellow);
+}
+.modalHeader h2 {
+    font-family: var(--fontArcade);
+    font-size: 0.9rem;
+    color: var(--neonYellow);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.btnClose {
+    background: none;
+    border: none;
+    color: var(--textLight);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color var(--transitionSpeed);
+}
+.btnClose:hover {
+    color: var(--neonPink);
+}
+.modalBody {
+    padding: 1.5rem;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.emptyScores {
+    font-size: 1.2rem;
+    color: var(--textMuted);
+    text-align: center;
+}
+
+.emptyScores i {
+    display: block;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--neonPink);
+}
