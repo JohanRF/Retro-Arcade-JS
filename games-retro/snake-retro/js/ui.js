@@ -77,7 +77,7 @@ export class UI{
 	//* Muestra la pantalla de PAUSA
 	showPauseOverlay(){
 		overlayTitle.textContent = 'PAUSA';
-		overlaySubtitle.textContent = 'PRESIONA P O ESPACIO PARA CONTINUAR';
+		overlaySubtitle.textContent = 'PRESIONA P PARA CONTINUAR';
 		nameInputContainer.classList.add('hidden'); //Oculta el formulario de nombre.
 		gameOverlay.classList.remove('hidden');// Muestra el panel superpuesto.
 	}
