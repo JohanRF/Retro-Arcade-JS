@@ -123,7 +123,7 @@ class Game{
 		}
 
 		//Teclado P: Alternar Pausa
-		if((key === 'p' || key === 'P')&& !this.isGameOver){
+		if((key === 'p' || key === 'P') && this.isGameStarted && !this.isGameOver){
 			this.togglePause();
 			return;
 		}
