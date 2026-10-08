@@ -197,7 +197,7 @@ class Game{
 		//Actualiza las vistas
 		this.ui.updateHighScore(this.leaderboard.getHighScore());
 		this.ui.updateLeaderboard(this.leaderboard.scores);
-		this.ui.showPauseOverlay(); //Vuelve al menu regular de GameOver
+		this.ui.showGameOverOverlay(); //Vuelve al menu regular de GameOver
 	}
 }
 
